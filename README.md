@@ -1,6 +1,8 @@
 # Delete-Exif
 Delete a Exif at JPEG file.
 
+
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](./LICENSE)
 ------
 ### Using a library
 
