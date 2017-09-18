@@ -4,28 +4,28 @@ from PIL.ExifTags import TAGS
 import os
 import glob
 
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+WORK_DIR = 'work'
+RESULT_DIR = 'result'
 
 # Get all of the image files that exist under the "work" directoly.
-fileList = [r.split('/')[-1] for r in glob.glob('./work/*')]
-
-# DEBUG PRINT
-# print(fileList)
+fileList = [r.split('/')[-1] for r in glob.glob(os.path.join(CURRENT_PATH, WORK_DIR,'*'))]
+print("=== TARGET FILE LIST => ", fileList)
 
 # Delete a Exif data
 for file in fileList:
-    
     file_extension = os.path.splitext(file)
 
     target_file_extension = [".jpeg", ".jpe", ".jpg", ".JPEG"]
     if file_extension[1] in target_file_extension:
         ret = {}
-        inFileName =  './work/' + file
-        outFileName = './result/' + file
-        
+        inFileName = os.path.join(CURRENT_PATH, WORK_DIR, file)
+        outFileName = os.path.join(CURRENT_PATH, RESULT_DIR, file)
+
         infile = Image.open(inFileName)
         try:
             info = infile._getexif()
-            
+
             if(info == None):
                 print("This file does not process : " + file)
                 continue
@@ -69,12 +69,13 @@ for file in fileList:
 
             infile.save(outFileName)
             infile.close()
+            print("=== SUCCESS => ", outFileName)
         except:
             print("=== ERROR => This file cannot be processed!! ===")
             print("FILE NAME : " + file)
             print("================================================")
-   
-                  
+
+
     else:
         print("This file is not supported : " + file)
 
