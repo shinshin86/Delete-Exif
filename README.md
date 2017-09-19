@@ -13,8 +13,6 @@ Delete a Exif at JPEG file.
 	pip install flask
 
 
--
-
 ### How to use - command line
 
 1. Put a target JPEG file in the "delete_exif_cli/work" directory.
@@ -23,9 +21,7 @@ Delete a Exif at JPEG file.
     	python delete_exif_cli/delete_exif_cli.py
 
 3. Image files(Erased a exif data) stored a "delete_exif_cli/result" directory by Python script.
-	
 
--
 
 ### How to use (web) - [TODO] working progress
 
