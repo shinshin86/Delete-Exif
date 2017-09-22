@@ -2,3 +2,6 @@
 *.un~
 *.pyc
 .*.py.un~
+
+delete_exif_cli/result/*
+delete_exif_cli/work/*
