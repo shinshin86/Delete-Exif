@@ -8,9 +8,17 @@ Delete a Exif at JPEG file.
 
 	pip install pillow
 
-※web only 
+**※ web only**
 
 	pip install flask
+
+And Using library
+
+* [jQuery](https://jquery.com/)
+* [Bootstrap](https://getbootstrap.com/)
+* [Font Awesome](http://fontawesome.io/)
+* [DropzoneJS](http://www.dropzonejs.com/)
+
 
 
 ### How to use - command line
