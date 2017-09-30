@@ -3,5 +3,10 @@
 *.pyc
 .*.py.un~
 
+# cli
 delete_exif_cli/result/*
 delete_exif_cli/work/*
+
+# web
+delete_exif_web/static/tmp/*
+delete_exif_web/static/vendor/*
