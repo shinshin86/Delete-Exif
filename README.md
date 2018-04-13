@@ -8,37 +8,49 @@ Delete a Exif at JPEG file.
 
     git clone https://github.com/shinshin86/Delete-Exif.git
 
-
 ## Install library
 
 	pip install pillow
-
-### web only
-
+	
+	# web only
 	pip install flask
+	pip install -U flask-cors
 
-And Using library
+### And using React/Redux etc...
 
-* [jQuery](https://jquery.com/)
-* [Bootstrap](https://getbootstrap.com/)
-* [Font Awesome](http://fontawesome.io/)
-* [DropzoneJS](http://www.dropzonejs.com/)
+```bash
+cd Delete-Exif/delete_exif_web/frontend
+yarn # or "npm install"
+```
+
 
 
 ## How to use - command line
 
 1. Put a target JPEG file in the ``delete_exif_cli/work`` directory.
+
 2. Run to python script!
 
-		cd Delete-Exif/delete_exif_cli
-    	python delete_exif_cli.py
+   ```bash
+   cd Delete-Exif/delete_exif_cli
+   python delete_exif_cli.py
+   ```
 
 3. Image files(Erased a exif data) stored a "delete_exif_cli/result" directory by Python script.
 
 
-## How to use (web) - [TODO] working progress
+## How to use (web)
 
-	cd Delete-Exif/delete_exif_web
+Running Backend server
+
+	cd Delete-Exif/delete_exif_web/backend
 	python delete_exif_web.py
-	
-Browser access to "localhost:3000"
+
+Running Frontend's local server
+
+```bash
+cd Delete-Exif/delete_exif_web/frontend
+yarn run start # npm run start
+```
+
+**Browser access to "localhost:3000"**

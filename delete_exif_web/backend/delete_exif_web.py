@@ -3,32 +3,35 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 import os
 import uuid
-from flask import Flask, request
-from flask import render_template, jsonify
+from flask import Flask, request, make_response
+from flask_cors import CORS
 from werkzeug import secure_filename
 
 
 app = Flask(__name__)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
+CORS(app)
 
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    f = request.files['file']
+    f = request.files['upload_file']
     filename = secure_filename(f.filename)
     (fn, ext) = os.path.splitext(filename)
     tmp_file_name = uuid.uuid1().hex + ext
     input_path = os.path.join("static", "tmp", tmp_file_name)
+
     print("upload file :", input_path)
     f.save(input_path)
-    res = delete_exif(input_path)
-    if res is not False:
-        return jsonify({"filename": f.filename,
-                        "result": res})
+
+    # res = delete_exif(input_path)
+    delete_exif(input_path)
+
+    response = make_response()
+    response.data = open(input_path, "rb").read()
+    download_file_name = f.filename
+    response.headers['Content-Disposition'] = 'attachment; filename=' + download_file_name
+    response.mimetype = "image/jpeg"
+    return response
 
 
 def delete_exif(file):
@@ -37,14 +40,14 @@ def delete_exif(file):
     target_file_extension = [".jpeg", ".jpe", ".jpg", ".JPEG"]
     if file_extension[1] in target_file_extension:
         ret = {}
-        inFileName  = file
+        inFileName = file
         outFileName = file
 
         infile = Image.open(inFileName)
         try:
             info = infile._getexif()
 
-            if(info == None):
+            if(info is None):
                 print("This file does not process : " + file)
                 return "false"
 
@@ -101,4 +104,4 @@ def delete_exif(file):
 
 
 if __name__ == '__main__':
-    app.run(port=int(os.environ.get("PORT", 3000)), debug=True)
+    app.run(port=int(os.environ.get("PORT", 3001)), debug=True)
