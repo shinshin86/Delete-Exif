@@ -36,13 +36,22 @@ class FileUploadForm extends Component {
   updateFile(f) {
     this.setState({ file: f })
   }
+  processingResult(data) {
+    if(data.result) {
+      return `Delete Exif File : ${data.name}`
+    } else if (data.result === false) {
+      return `Failure Delete Exif`
+    } else {
+      return `Select Delete Exif File...`
+    }
+  }
 
   render() {
     const { data, deleteExif, isProcessing }  = this.props
     return (
       <div>
         <div>
-          Delete Exif File : {data.name}<br />
+          <h3>{this.processingResult(data)}</h3>
           { isProcessing && <CircularLoading style={styles.loadingCircle} /> }
           <input type="file" onChange={(e) => this.handleChangeFile(e)}/>
           <Button bsStyle="primary" onClick={() => deleteExif(this.state.file)}>

@@ -28,7 +28,8 @@ export default function userManager(
     case FAILURE_DELETE_EXIF:
       return {
         ...state, 
-        isProcessing: false
+        isProcessing: false,
+        data: action.data
       }
     default:
       return state

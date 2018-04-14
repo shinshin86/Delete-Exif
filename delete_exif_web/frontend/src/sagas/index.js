@@ -11,9 +11,10 @@ export function* handleDeleteExif() {
     const data = yield call(fileUpload, action.file)
 
     if(data) {
-      yield put(successDeleteExif(action.file))
+      const res = Object.assign(action.file, {result: true})
+      yield put(successDeleteExif(res))
     } else {
-      yield put(failureDeleteExif())
+      yield put(failureDeleteExif({result: false}))
     }
   }
 }
@@ -36,8 +37,12 @@ function fileUpload(file){
       }
     })
     .then(blob => {
-      FileSaver.saveAs(blob, file.name)
-      return true
+      if(blob.type === "image/jpeg" ) {
+        FileSaver.saveAs(blob, file.name)
+        return true
+      } else {
+        return false
+      }
     })
     .catch(err => {
       console.error(`ERROR: ${err}`)

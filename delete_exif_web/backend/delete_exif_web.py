@@ -3,7 +3,7 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 import os
 import uuid
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 from flask_cors import CORS
 from werkzeug import secure_filename
 
@@ -24,14 +24,17 @@ def upload():
     f.save(input_path)
 
     # res = delete_exif(input_path)
-    delete_exif(input_path)
-
-    response = make_response()
-    response.data = open(input_path, "rb").read()
-    download_file_name = f.filename
-    response.headers['Content-Disposition'] = 'attachment; filename=' + download_file_name
-    response.mimetype = "image/jpeg"
-    return response
+    if(delete_exif(input_path)):
+        response = make_response()
+        response.data = open(input_path, "rb").read()
+        download_file_name = f.filename
+        response.headers['Content-Disposition'] = 'attachment; filename=' + download_file_name
+        response.mimetype = "image/jpeg"
+        return response
+    else:
+        msg = "This file does not process"
+        return jsonify({"filename": f.filename,
+                        "msg": msg})
 
 
 def delete_exif(file):
@@ -49,7 +52,7 @@ def delete_exif(file):
 
             if(info is None):
                 print("This file does not process : " + file)
-                return "false"
+                return False
 
             for tag, value in info.items():
                 decoded = TAGS.get(tag, tag)
@@ -91,16 +94,16 @@ def delete_exif(file):
             infile.save(outFileName)
             infile.close()
 
-            return "true"
+            return True
         except:
             print("=== ERROR => This file cannot be processed!! ===")
             print("FILE NAME : " + file)
             print("================================================")
-            return "false"
+            return False
 
     else:
         print("This file is not supported : " + file)
-        return "false"
+        return False
 
 
 if __name__ == '__main__':
