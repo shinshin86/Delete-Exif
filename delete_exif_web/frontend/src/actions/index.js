@@ -2,10 +2,10 @@ export const DELETE_EXIF = 'DELETE_EXIF'
 export const SUCCESS_DELETE_EXIF = 'SUCCESS_DELETE_EXIF'
 export const FAILURE_DELETE_EXIF = 'FAILURE_DELETE_EXIF'
 
-export function deleteExif(file) {
+export function deleteExif(files) {
   return {
     type: DELETE_EXIF,
-    file
+    files
   }
 }
 

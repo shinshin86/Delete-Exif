@@ -8,10 +8,10 @@ import FileSaver from 'file-saver';
 export function* handleDeleteExif() {
   while(true) {
     const action = yield take(DELETE_EXIF)
-    const data = yield call(fileUpload, action.file)
+    const successFiles = yield call(fileUpload, action.files)
 
-    if(data) {
-      const res = Object.assign(action.file, {result: true})
+    if(successFiles.length !== 0) {
+      const res = Object.assign(successFiles, {result: true})
       yield put(successDeleteExif(res))
     } else {
       yield put(failureDeleteExif({result: false}))
@@ -19,35 +19,39 @@ export function* handleDeleteExif() {
   }
 }
 
-function fileUpload(file){
+async function fileUpload(files){
+  let successFiles = []
   const url = 'http://localhost:3001/upload'
 
-  const formData = new FormData()
-  formData.append('upload_file', file)
+  await Promise.all(files.map(async (file) => {
+      const formData = new FormData()
+      formData.append('upload_file', file)
 
-  return fetch(url, {
-    method: 'POST',
-    body: formData
-  })
-    .then(res => {
-      if (res.status === 200) {
-        return res.blob()
-      } else {
-        console.error("ERROR: Not response status 200")
-      }
+      return fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+        .then(res => {
+          if (res.status === 200) {
+            return res.blob()
+          } else {
+            console.error("ERROR: Not response status 200")
+          }
+        })
+        .then(blob => {
+          if(blob.type === "image/jpeg" ) {
+            FileSaver.saveAs(blob, file.name)
+            successFiles.push(file)
+          } else {
+            console.log(`Failured file : ${file.name}`)
+          }
+        })
+        .catch(err => {
+          console.log(`Failured file : ${file.name}`)
+        })
     })
-    .then(blob => {
-      if(blob.type === "image/jpeg" ) {
-        FileSaver.saveAs(blob, file.name)
-        return true
-      } else {
-        return false
-      }
-    })
-    .catch(err => {
-      console.error(`ERROR: ${err}`)
-      throw new Error('ERROR')
-    })
+  )
+  return successFiles
 }
 
 export default function* root() {

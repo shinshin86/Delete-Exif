@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
+import Dropzone from 'react-dropzone'
 import { deleteExif } from '../actions'
 import { Button } from 'react-bootstrap'
 import { circularLoading }  from '@yami_beta/react-circular-loading'
@@ -24,21 +25,31 @@ class FileUploadForm extends Component {
     super(props, context);
 
     this.state = {
-      file: []
+      acceptedFiles: [],
+      rejectedFiles: [],
     };
+  }
+
+  handleDrop(accepted, rejected) {
+    this.setState({ acceptedFiles: accepted, rejectedFiles: rejected })
   }
 
   handleChangeFile(e) {
     const target = e.target;
     const file = target.files.item(0);
-    this.updateFile(file);
+    this.updateFile(new Array(file));
   }
   updateFile(f) {
-    this.setState({ file: f })
+    this.setState({ acceptedFiles: f })
   }
   processingResult(data) {
     if(data.result) {
-      return `Delete Exif File : ${data.name}`
+      let filenames = ''
+      data.map(file => {
+        filenames += file.name
+        filenames += ','
+      })
+      return `Delete Exif File : ${filenames}`
     } else if (data.result === false) {
       return `Failure Delete Exif`
     } else {
@@ -48,13 +59,33 @@ class FileUploadForm extends Component {
 
   render() {
     const { data, deleteExif, isProcessing }  = this.props
+    console.log(data)
     return (
       <div>
         <div>
           <h3>{this.processingResult(data)}</h3>
           { isProcessing && <CircularLoading style={styles.loadingCircle} /> }
+          <Dropzone
+            ref={(node) => this.dropzone = node}
+            accept="image/jpeg,image/jpg"
+            onDrop={(accepted, rejected)=> this.handleDrop(accepted, rejected)}
+          >
+            Delete Exif File is Here...
+          </Dropzone>
           <input type="file" onChange={(e) => this.handleChangeFile(e)}/>
-          <Button bsStyle="primary" onClick={() => deleteExif(this.state.file)}>
+
+          <div className="uploadFile">
+            <div>Accepted files</div>
+            <ul>
+              {this.state.acceptedFiles.map(f => <li key={f.name}>File name : {f.name}<br />File size : {f.size}</li>)}
+            </ul>
+            <div>Rejected files</div>
+            <ul>
+              {this.state.rejectedFiles.map(f => <li key={f.name}>File name : {f.name}<br />File size : {f.size}</li>)}
+            </ul>
+          </div>
+
+          <Button bsStyle="primary" onClick={() => deleteExif(this.state.acceptedFiles)}>
             Upload
           </Button>
         </div>
