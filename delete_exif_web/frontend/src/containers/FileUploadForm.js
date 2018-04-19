@@ -22,7 +22,15 @@ const styles = {
   },
   fileButton: {
     margin: 10
-  }
+  },
+  dropzoneStyle: {
+    width: '100%',
+    height: '200px',
+    borderWidth: '2px',
+    borderColor: 'rgb(102, 102, 102)',
+    borderStyle: 'dashed',
+    borderRadius: '5px',
+  },
 }
 const CircularLoading = circularLoading({
   num: 12,
@@ -80,6 +88,7 @@ class FileUploadForm extends Component {
             ref={(node) => this.dropzone = node}
             accept="image/jpeg,image/jpg"
             onDrop={(accepted, rejected)=> this.handleDrop(accepted, rejected)}
+            style={styles.dropzoneStyle}
           >
             Delete Exif File is Here...
           </Dropzone>
