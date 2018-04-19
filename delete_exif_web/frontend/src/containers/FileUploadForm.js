@@ -21,7 +21,7 @@ const styles = {
     listStyleType: 'none'
   },
   fileButton: {
-    margin: 10
+    margin: 5
   },
   dropzoneStyle: {
     width: '100%',
@@ -75,6 +75,12 @@ class FileUploadForm extends Component {
       return `Select Delete Exif File...`
     }
   }
+  handleClearFile() {
+    this.setState({
+      acceptedFiles: [],
+      rejectedFiles: []
+    })
+  }
 
   render() {
     const { data, deleteExif, isProcessing }  = this.props
@@ -113,8 +119,11 @@ class FileUploadForm extends Component {
             </Panel>
           </div>
 
-          <Button bsStyle="primary" onClick={() => deleteExif(this.state.acceptedFiles)}>
+          <Button bsStyle="primary" style={styles.fileButton} onClick={() => deleteExif(this.state.acceptedFiles)}>
             Upload
+          </Button>
+          <Button bsStyle="primary" style={styles.fileButton} onClick={() => this.handleClearFile()}>
+            Clear
           </Button>
         </div>
       </div>
