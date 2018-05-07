@@ -54,3 +54,14 @@ yarn run start # npm run start
 ```
 
 **Browser access to "localhost:3000"**
+
+
+
+## Concurrent Start (web)
+
+```bash
+cd Delete-Exif/delete_exif_web/
+./start.sh
+```
+
+**Browser access to "localhost:3000"**
