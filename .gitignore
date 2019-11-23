@@ -4,10 +4,5 @@
 .*.py.un~
 
 # cli
-delete_exif_cli/result/*
-delete_exif_cli/work/*
-
-# web
-tmp/
-
-node_modules/
+result/*
+work/*
