@@ -16,7 +16,7 @@ print("=== TARGET FILE LIST => ", fileList)
 for file in fileList:
     file_extension = os.path.splitext(file)
 
-    target_file_extension = [".jpeg", ".jpe", ".jpg", ".JPEG"]
+    target_file_extension = [".jpeg", ".jpe", ".jpg", ".JPEG", ".JPG"]
     if file_extension[1] in target_file_extension:
         ret = {}
         inFileName = os.path.join(CURRENT_PATH, WORK_DIR, file)
